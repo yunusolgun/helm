@@ -1,0 +1,146 @@
+helm install apache bitnami/apache --namespace=web
+helm upgrade apache bitnami/apache --namespace=web
+helm rollback apache 1 --namespace=web
+helm uninstall apache
+
+---
+
+Revision History
+Dynamic Configuration
+Consistency
+intelligent deployments
+life cycle hooks
+security
+
+-----
+
+helm repo list
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo list
+helm repo remove bitnami
+helm repo add bitnami https://charts.bitnami.com/bitnami
+
+
+Search the repository:
+
+helm search repo mysql
+helm search repo database
+helm search repo database --versions
+
+
+Install a package:
+
+kubectl get pods
+
+(Below Two commands - In a Different Shell/Commandline window/tab)
+minikube ssh
+docker images
+helm install mydb bitnami/mysql
+
+Check the cluster:
+
+kubectl get pods
+minikube ssh
+docker images
+
+To check the installation status:
+
+helm status mydb
+
+
+
+--------------------------------------------
+
+To Upgrade:
+
+ROOT_PASSWORD=$(kubectl get secret --namespace default mydb-mysql -o jsonpath="{.data.mysql-root-password}" | base64 --decode)
+
+helm upgrade --namespace default mysql-release bitnami/mysql --set auth.rootPassword=$ROOT_PASSWORD
+
+-------
+
+helm uninstall mysql-release
+
+---
+helm install tomcat bitnami/tomcat
+helm upgrade tomcat bitnami/tomcat --values values.yaml
+helm uninstall tomcat
+
+------
+helm get values mydb
+helm get values mydb --all
+helm get values mydb --revision 1
+helm get manifest mydb
+
+helm history mydb
+
+helm rollback mywebserver 1
+helm uninstall mywebserver --keep-history
+
+helm install mywebserver bitnami/apache --namespace mynamespace --create-namespace
+helm upgrade --install mywebservice bitnami/apache
+
+helm install bitnami/apache --generate-name
+helm install bitnami/apache --generate-name --name-template "mywevserver-{{randAlpha 7 | lower}}"
+helm install mywebserver bitnami/apache --wait --timeout 2m
+
+-------
+
+helm create firstchart
+helm install firstapp firstchart
+helm package firstchart
+
+helm lint firstchart  <-- chart check
+
+------
+
+helm template firstchart
+helm install myapp firstchart --dry-run  <--templateden farkı, kuberneteste validation kontrolünü de yapması
+
+-----
+
+helm dependecy update firstchart
+helm install myfirstapp firstchart
+helm uninstall myfirstapp
+helm test myfirstapp
+
+----
+
+helm repo index chartsrepo/
+helm package firstchart -d chartsrepo/
+
+cd chartsrepo
+python3 -m http.server --bind 127.0.0.1 8080
+
+helm repo list
+helm repo add localrepo http://localhost:8080
+helm install firstapp localrepo/firstchart
+
+helm pull localrepo/firstchart
+helm install firstapp firstchart-0.1.0.tgz
+
+helm package secondchart
+helm package secondchart -d chartsrepo
+helm repo index chartsrepo
+
+helm repo update
+helm search repo secondchart
+
+
+git clone https://github.com/yunusolgun/gitchartrepo.git
+cd gitchartrepo
+helm create demochart
+helm package demochart
+helm repo index .
+git add .
+git commit -m "inital commit"
+git push
+Repo -> Settings --> Pages --> Branch=main --> Save
+Your site is ready to be published at https://yunusolgun.github.io/gitchartrepo/
+helm repo add gitrepo https://yunusolgun.github.io/gitchartrepo/
+helm install gitapp gitrepo/demochart
+
+helm search repo gitrepo
+
+-----------
+
